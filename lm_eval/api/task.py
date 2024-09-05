@@ -1373,10 +1373,12 @@ class ConfigurableTask(Task):
                 ),
             }
         elif self.OUTPUT_TYPE == "multiple_choice":
+            print("XXX: Evaluating results for MC")
             lls, is_greedy = zip(*results)
 
             # retrieve choices in List[str] form, to compute choice lengths, etc.
             choices = self.doc_to_choice(doc)
+            print("XXX: Choices are", choices)
             completion_len = np.array([float(len(i)) for i in choices])
 
             if (
@@ -1391,6 +1393,7 @@ class ConfigurableTask(Task):
                 # and this stores our "regular" conditional loglikelihoods
                 lls = lls[::2]
 
+            print("XXX: lls is", type(lls), " with len ", len(lls))
             pred = np.argmax(lls)
             pred_norm = np.argmax(lls / completion_len)
 
